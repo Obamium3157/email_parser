@@ -4,10 +4,10 @@ use imap::types::Fetch;
 use mailparse::{MailHeaderMap, parse_mail};
 use native_tls::TlsConnector;
 
-fn main() -> imap::error::Result<()> {
-    let email = "p.m.zhdanov@yandex.ru";
-    let password = "noeqaraudaqcggjo";
+const EMAIL: &'static str = "p.m.zhdanov@yandex.ru";
+const PASSWORD: &'static str = "noeqaraudaqcggjo";
 
+fn main() -> imap::error::Result<()> {
     let tls = TlsConnector::builder().build().unwrap();
     let client = {
         let tcp = TcpStream::connect("imap.yandex.ru:993")?;
@@ -15,7 +15,7 @@ fn main() -> imap::error::Result<()> {
         imap::Client::new(tls_stream)
     };
 
-    let mut session = client.login(email, password).map_err(|e| e.0)?;
+    let mut session = client.login(EMAIL, PASSWORD).map_err(|e| e.0)?;
     println!("Successfully logged in!");
 
     session.select("INBOX")?;
